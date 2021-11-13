@@ -10,10 +10,10 @@ Application parts:
 Vocabulary:
 * Element
 * Combination
-* React
-* Discovered
-* Exploared
-* Combination have element(Combination with element)
+* React - action done by 2 elements draged one on another that create a new element(as the according combination exists).
+* Discovered 
+* Exploared - all combinations that have the element as an input were discovered.`
+* Combination have element(Combination with element) - a combination as at least one field(```input1``` or ```input2```) equal to the element ``id_name```
 
 ## Data ##
 All data used in the game logic is described in the input __.json__ files. Such files are created manually and must be validated by __data_validation__ module before uploading it to the game package.
@@ -26,23 +26,40 @@ See __Entities.md__ for detailed information.
 
 ## Logic ## 
 
-Read input from files
+### Read input from files ###
+
+ 1. Read __elements.json__ element by element into ```HashMap<String, Element>  elements``` . Each HashMap entity has:
+ * ```id_name``` value from json as a key
+ * instance of class ```Element``` containing all the element fields from the file as a value. Any additional fields can be added to the ```Element``` object if nessesary. For instance, field ```isDiscovered``` doesn't exists in __elements.json__, but is read  from a player status file.    
+ 
+ 2. Read __combinations.json__ and process each record using the algorithm:  
+ * read ```output``` field into a ```List<String>```
+ * create an instance of class ```Combination``` passing ```input1```, ```input2``` and  ```List<String> output```
+ * in ```elements``` map find elements with ```id_name``` equal to ```input1``` or ```input2```. Update found elements with a link to the combination
+ * put a combination into ```HashSet<Combination> combinations```
 
 ### State ###
 
+During the game log a player progress.
+
 #### Write ####
+Once  a new element is discovered write its hash into __elements.state__. Add the hash of the combination used to discovery into __collections.state__.
 
 #### Read ####
 
-### Logic API functions ###
+During application lauch read state files after __*.json__ files are read:
+* for each hash in __elements.state__ find the according element in ```HashMap elements``` and set the field ```isDiscovered``` to ```ture```.
+* update ```HashSet combinations``` in the same way reading __combinations.state__
+
+
+### Game core API functions ###
 
 The following signatures to be detailed after defining objets structure in the code.
   
 1. tryCombination(id_name, id_name)
 
-Check whether there is a combination with given 2 elements.
-
-__Input__: 2 strings ```id_name``` - reacting elements
+Check whether there is a combination with given 2 elements.  
+__Input__: 2 strings ```id_name``` - reacting elements  
 __Output__: a list of strings ```id_name``` - result of the reaction - or ```null``` if there is no such a combination.
 
 2. getAllElements()
