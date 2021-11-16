@@ -1,0 +1,37 @@
+{[
+	{
+		"input1": "water",
+		"input2": "fire",
+		"output":["steam"]
+	},
+	{
+		"input1": "water",
+		"input2": "water",
+		"output":["lake"]
+	},
+    {
+		"input1": "lake",
+		"input2": "water",
+		"output":["sea"]
+	},
+    {
+		"input1": "sea",
+		"input2": "fire",
+		"output":["salt","steam"]
+	},
+    {
+		"input1": "earth",
+		"input2": "fire",
+		"output":["lava"]
+	},
+    {
+		"input1": "lava",
+		"input2": "air",
+		"output":["stone"]
+	},
+    {
+		"input1": "earth",
+		"input2": "earth",
+		"output":["hill"]
+	},
+]}
