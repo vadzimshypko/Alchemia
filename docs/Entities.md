@@ -5,7 +5,8 @@
 Elements are units in the game. They are described in __elements.json__.
 ```
 #elements.json
-{[
+{
+	"elements":[
 	{
 		"id_name": "primordail_soup",
 		"display_name": "primordail soup",
@@ -38,7 +39,8 @@ Combinations are described in __combinations.json__.
 
 ```
 #combinations.json
-{[
+{
+	"combinations": [
 	{
 		"input1": "water",
 		"input2": "fire",

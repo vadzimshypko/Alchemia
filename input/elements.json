@@ -1,57 +1,59 @@
-{[
-    {
-        "id_name": "water",
-        "display_name": "water",
-        "image": "water.png"
-    },
-    {
-        "id_name": "earth",
-        "display_name": "earth",
-        "image": "earth.png"
-    },
-    {
-        "id_name": "fire",
-        "display_name": "fire",
-        "image": "fire.png"
-    },
-    {
-        "id_name": "air",
-        "display_name": "air",
-        "image": "air.png"
-    },
-    {
-        "id_name": "steam",
-        "display_name": "steam",
-        "image": "steam.png"
-    },
-    {
-        "id_name": "lake",
-        "display_name": "lake",
-        "image": "lake.png"
-    },
-    {
-        "id_name": "sea",
-        "display_name": "sea",
-        "image": "sea.png"
-    },
-    {
-        "id_name": "lava",
-        "display_name": "lava",
-        "image": "lava.png"
-    },
-    {
-        "id_name": "hill",
-        "display_name": "hill",
-        "image": "hill.png"
-    },
-    {
-        "id_name": "stone",
-        "display_name": "stone",
-        "image": "stone.png"
-    },
-    {
-        "id_name": "salt",
-        "display_name": "salt",
-        "image": "salt.png"
-    }
-]}
+{
+    "elements": [
+        {
+            "id_name": "water",
+            "display_name": "water",
+            "image": "water.png"
+        },
+        {
+            "id_name": "earth",
+            "display_name": "earth",
+            "image": "earth.png"
+        },
+        {
+            "id_name": "fire",
+            "display_name": "fire",
+            "image": "fire.png"
+        },
+        {
+            "id_name": "air",
+            "display_name": "air",
+            "image": "air.png"
+        },
+        {
+            "id_name": "steam",
+            "display_name": "steam",
+            "image": "steam.png"
+        },
+        {
+            "id_name": "lake",
+            "display_name": "lake",
+            "image": "lake.png"
+        },
+        {
+            "id_name": "sea",
+            "display_name": "sea",
+            "image": "sea.png"
+        },
+        {
+            "id_name": "lava",
+            "display_name": "lava",
+            "image": "lava.png"
+        },
+        {
+            "id_name": "hill",
+            "display_name": "hill",
+            "image": "hill.png"
+        },
+        {
+            "id_name": "stone",
+            "display_name": "stone",
+            "image": "stone.png"
+        },
+        {
+            "id_name": "salt",
+            "display_name": "salt",
+            "image": "salt.png"
+        }
+    ]
+}
