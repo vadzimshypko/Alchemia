@@ -13,7 +13,7 @@ Vocabulary:
 * React - action done by 2 elements draged one on another that create a new element(as the according combination exists).
 * Discovered 
 * Exploared - all combinations that have the element as an input were discovered.`
-* Combination have element(Combination with element) - a combination as at least one field(```input1``` or ```input2```) equal to the element ``id_name```
+* Combination have element(Combination with element) - a combination as at least one field(```input1``` or ```input2```) equal to the element ```id_name```
 
 ## Data ##
 All data used in the game logic is described in the input __.json__ files. Such files are created manually and must be validated by __data_validation__ module before uploading it to the game package.
