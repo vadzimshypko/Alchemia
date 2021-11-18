@@ -1,5 +1,4 @@
-{
-	"combinations":	[
+[
 		{
 			"input1": "water",
 			"input2": "fire",
@@ -35,5 +34,4 @@
 			"input2": "earth",
 			"output": [ "hill" ]
 		}
-	]
-}
+]
