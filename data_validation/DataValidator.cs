@@ -10,7 +10,7 @@ namespace DataValidation
     {
         private List<InputElement> elements;
         private List<InputCombination> combinations;
-
+        HashSet<string> id_names;
         private bool validationSuccess = true;
         //todo store indexes instead of elements
         private List<InputElement> nonUniqueElements;
@@ -39,7 +39,6 @@ namespace DataValidation
             impossibleCombinations = CheckCombinationElementsExist();
             validationSuccess &= (impossibleCombinations.Count == 0);
             //-----
-            //todo check that images files from element json exists
             Console.WriteLine("checkElementImagesExist...");
             noImageElements = checkElementImagesExist();
             validationSuccess &= (noImageElements.Count == 0);
@@ -49,23 +48,26 @@ namespace DataValidation
 
         }
 
-        //todo put input file names into the config class
         public void LoadJsonElements()
         {
-            using (StreamReader r = new StreamReader("input/elements.json"))
+            using (StreamReader r = new StreamReader(ConfigurationManager.AppSettings["inputElementsRelativePath"]))
             {
                 string json = r.ReadToEnd();
                 elements = JsonConvert.DeserializeObject<List<InputElement>>(json);
+            }
+            id_names = new HashSet<string>();
+            foreach (InputElement element in elements)
+            {
+                id_names.Add(element.id_name);
             }
         }
 
         public void LoadJsonCombinations()
         {
-            using (StreamReader r = new StreamReader("input/combinations.json"))
+            using (StreamReader r = new StreamReader(ConfigurationManager.AppSettings["inputCombinationsRelativePath"]))
             {
                 string json = r.ReadToEnd();
                 combinations = JsonConvert.DeserializeObject<List<InputCombination>>(json);
-
             }
         }
 
@@ -77,7 +79,6 @@ namespace DataValidation
                 Console.WriteLine(el.ToString());
             }
         }
-
         private void printCombinationsList(List<InputCombination> list)
         {
             foreach (var comb in list)
@@ -100,7 +101,11 @@ namespace DataValidation
         public List<InputElement> CheckElementsAreUnique()
         {
             List<InputElement> errors = new List<InputElement>();
-            HashSet<string> id_names = new();
+            if(id_names.Count == elements.Count)
+            {
+                return errors;
+            }
+            id_names.Clear();
             foreach (InputElement element in elements)
             {
                 if (id_names.Contains(element.id_name))
@@ -118,11 +123,6 @@ namespace DataValidation
         public List<Tuple<InputCombination, string>> CheckCombinationElementsExist()
         {
             List<Tuple<InputCombination, string>> errors = new();
-            HashSet<string> id_names = new();
-            foreach (InputElement element in elements)
-            {
-                id_names.Add(element.id_name);
-            }
             foreach (InputCombination comb in combinations)
             {
                 bool failed = false;
@@ -167,7 +167,6 @@ namespace DataValidation
                 }
             }
             return errors;
-           
         }
 
         public void report()
