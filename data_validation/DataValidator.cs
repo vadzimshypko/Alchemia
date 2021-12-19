@@ -19,12 +19,13 @@ namespace DataValidation
         public DataValidator()
         {
             //todo meesage in case json format is incorrect
-            //todo message if some fields are missing or empty
+            //todo message if some fields are missing or empty(see method AreFieldSet)
             Console.WriteLine("Reading input files");
             LoadJsonElements();
             Console.WriteLine("Total elements read: " + elements.Count);
             LoadJsonCombinations();
             Console.WriteLine("Total combinations read: " + combinations.Count);
+            printCombinationsList(combinations);
         }
 
         public void run()
@@ -81,7 +82,7 @@ namespace DataValidation
         }
         private void printCombinationsList(List<InputCombination> list)
         {
-            foreach (var comb in list)
+            foreach (InputCombination comb in list)
             {
                 Console.WriteLine(comb.ToString());
             }

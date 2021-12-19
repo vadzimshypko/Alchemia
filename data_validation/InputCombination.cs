@@ -17,6 +17,14 @@ namespace DataValidation
             return "input1:" + input1 + ";input2:" + input2 + ";output:" + outputSring;
         }
 
+        public bool AreFieldsSet()
+        {
+            return !(input1.Equals("") || input1 == null) &&
+                !(input2.Equals("") || input2 == null) &&
+                !(output.Count == 0 || output == null);
+            
+        }
+
 
     }
 }
