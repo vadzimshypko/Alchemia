@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using Newtonsoft.Json;
-
+ 
 namespace DataValidation
 {
     public class DataValidator
@@ -11,17 +12,19 @@ namespace DataValidation
         private List<InputCombination> combinations;
 
         private bool validationSuccess = true;
+        //todo store indexes instead of elements
         private List<InputElement> nonUniqueElements;
-        private List<Tuple<InputCombination,string>> impossibleCombinations;
-
+        private List<Tuple<InputCombination, string>> impossibleCombinations;
+        private List<InputElement> noImageElements;
         public DataValidator()
         {
             //todo meesage in case json format is incorrect
             //todo message if some fields are missing or empty
             Console.WriteLine("Reading input files");
             LoadJsonElements();
-            printElementsList(elements);
+            Console.WriteLine("Total elements read: " + elements.Count);
             LoadJsonCombinations();
+            Console.WriteLine("Total combinations read: " + combinations.Count);
         }
 
         public void run()
@@ -30,13 +33,16 @@ namespace DataValidation
             //---
             Console.WriteLine("CheckElementsAreUnique...");
             nonUniqueElements = CheckElementsAreUnique();
-            validationSuccess &= (nonUniqueElements.Count ==  0);
+            validationSuccess &= (nonUniqueElements.Count == 0);
             //-----
             Console.WriteLine("CheckCombinationElementsExist...");
             impossibleCombinations = CheckCombinationElementsExist();
-            validationSuccess &= (CheckCombinationElementsExist().Count == 0);
+            validationSuccess &= (impossibleCombinations.Count == 0);
             //-----
             //todo check that images files from element json exists
+            Console.WriteLine("checkElementImagesExist...");
+            noImageElements = checkElementImagesExist();
+            validationSuccess &= (noImageElements.Count == 0);
             //todo check if all combinations are reachable 
             //----
             report();
@@ -46,25 +52,25 @@ namespace DataValidation
         //todo put input file names into the config class
         public void LoadJsonElements()
         {
-            using (StreamReader r = new StreamReader("input/elements.json")) 
+            using (StreamReader r = new StreamReader("input/elements.json"))
             {
                 string json = r.ReadToEnd();
                 elements = JsonConvert.DeserializeObject<List<InputElement>>(json);
             }
         }
 
-        public  void LoadJsonCombinations()
+        public void LoadJsonCombinations()
         {
             using (StreamReader r = new StreamReader("input/combinations.json"))
             {
                 string json = r.ReadToEnd();
                 combinations = JsonConvert.DeserializeObject<List<InputCombination>>(json);
-                
+
             }
         }
 
         //todo remake into 1 method using List<Object> and explicite type cast
-        private static void printElementsList(List<InputElement> list )
+        private static void printElementsList(List<InputElement> list)
         {
             foreach (InputElement el in list)
             {
@@ -95,12 +101,12 @@ namespace DataValidation
         {
             List<InputElement> errors = new List<InputElement>();
             HashSet<string> id_names = new();
-            foreach(InputElement element in elements)
+            foreach (InputElement element in elements)
             {
                 if (id_names.Contains(element.id_name))
                 {
                     errors.Add(element);
-                } 
+                }
                 else
                 {
                     id_names.Add(element.id_name);
@@ -109,15 +115,15 @@ namespace DataValidation
             return errors;
         }
 
-        public List<Tuple<InputCombination,string>> CheckCombinationElementsExist()
+        public List<Tuple<InputCombination, string>> CheckCombinationElementsExist()
         {
-            List<Tuple<InputCombination, string>> errors = new ();
+            List<Tuple<InputCombination, string>> errors = new();
             HashSet<string> id_names = new();
             foreach (InputElement element in elements)
             {
-                    id_names.Add(element.id_name);
+                id_names.Add(element.id_name);
             }
-            foreach(InputCombination comb in combinations)
+            foreach (InputCombination comb in combinations)
             {
                 bool failed = false;
                 string missing_elements = "";
@@ -132,7 +138,7 @@ namespace DataValidation
                         failed = true;
                         missing_elements += comb.input1 + "; ";
                     }
-                    foreach(string el in comb.output)
+                    foreach (string el in comb.output)
                     {
                         if (!id_names.Contains(el))
                         {
@@ -147,6 +153,21 @@ namespace DataValidation
                 }
             }
             return errors;
+        }
+
+        public List<InputElement> checkElementImagesExist() 
+        {
+            List<InputElement> errors = new List<InputElement>();
+            string relativeImagesPath = ConfigurationManager.AppSettings["imagesRelativePath"];
+            foreach (InputElement element in elements)
+            {
+                if (!File.Exists(relativeImagesPath + "\\" + element.image))
+                {
+                    errors.Add(element); 
+                }
+            }
+            return errors;
+           
         }
 
         public void report()
@@ -174,6 +195,16 @@ namespace DataValidation
             }
             Console.WriteLine("Result of CheckCombinationElementsExist: " +
                 ((impossibleCombinations.Count < 0) ? "passed" : "false"));
+            //-----
+            Console.WriteLine("--------------------------------------------");
+            Console.WriteLine("Validation: checkElementImagesExist");
+            if (noImageElements.Count > 0)
+            {
+                Console.WriteLine("Failed elements:");
+                printElementsList(noImageElements);
+            }
+            Console.WriteLine("Result of checkElementImagesExist: " +
+                ((noImageElements.Count < 0) ? "passed" : "false"));
             //-----
             Console.WriteLine("--------------------------------------------");
             Console.WriteLine("DataValidation result: " + (validationSuccess ? "passed" : "failed"));

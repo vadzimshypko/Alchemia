@@ -5,7 +5,7 @@
         "image": "water.png"
     },
     {
-        "id_name": "earth",
+        "id_name": "water",
         "display_name": "earth",
         "image": "earth.png"
     },
@@ -45,7 +45,7 @@
         "image": "hill.png"
     },
     {
-        "id_name": "stone",
+        "id_name": "hill",
         "display_name": "stone",
         "image": "stone.png"
     },
